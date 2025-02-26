@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resolver Ecuación Cuadrática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resolver Ecuación Cuadrática</h1>
+        <form id="quadraticForm">
+            <label for="a">Coeficiente a:</label>
+            <input type="number" id="a" required>
+            <label for="b">Coeficiente b:</label>
+            <input type="number" id="b" required>
+            <label for="c">Coeficiente c:</label>
+            <input type="number" id="c" required>
+            <button type="submit">Calcular Raíces</button>
+            <button type="button" onclick="limpiar()">Limpiar</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('quadraticForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const a = parseFloat(document.getElementById('a').value);
+            const b = parseFloat(document.getElementById('b').value);
+            const c = parseFloat(document.getElementById('c').value);
+            const resultDiv = document.getElementById('result');
+
+            // Validar que a no sea cero
+            if (a === 0) {
+                resultDiv.innerHTML = '<span class="error">Error: El coeficiente "a" no puede ser cero.</span>';
+                return;
+            }
+
+            // Calcular el discriminante
+            const D = b * b - 4 * a * c;
+
+            if (D < 0) {
+                const Dj = -D;
+                const x1j = (-b / (2 * a)).toFixed(2);
+                const x2j = (Math.sqrt(Dj) / (2 * a)).toFixed(2);
+                resultDiv.innerHTML = `
+                    La ecuación no tiene soluciones reales, pero sus soluciones son complejas:<br>
+                    x1 = ${x1j} + ${x2j}i<br>
+                    x2 = ${x1j} - ${x2j}i<br>
+                    El discriminante D = ${D.toFixed(2)}
+                `;
+            } else if (D === 0) {
+                const x = (-b / (2 * a)).toFixed(2);
+                resultDiv.innerHTML = `
+                    La ecuación tiene una solución real doble: x = ${x}.<br>
+                    El discriminante D = ${D.toFixed(2)}
+                `;
+            } else {
+                const x1 = ((-b + Math.sqrt(D)) / (2 * a)).toFixed(2);
+                const x2 = ((-b - Math.sqrt(D)) / (2 * a)).toFixed(2);
+                resultDiv.innerHTML = `
+                    Las raíces son: x1 = ${x1} y x2 = ${x2}.<br>
+                    El discriminante D = ${D.toFixed(2)}
+                `;
+            }
+        });
+
+        // Función para limpiar los campos y el resultado
+        function limpiar() {
+            document.getElementById('a').value = '';
+            document.getElementById('b').value = '';
+            document.getElementById('c').value = '';
+            document.getElementById('result').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
